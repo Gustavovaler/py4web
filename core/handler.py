@@ -5,6 +5,7 @@ import controllers
 from settings import STATIC_DIR
 from router import routes
 from utilities.utils import static_files_maping
+from core.error_messages import error_no_such_view
 
 from controllers import IndexController, UsersController, ProductosController
 
@@ -30,16 +31,26 @@ class Handler(SimpleHTTPRequestHandler):
                 f.close()
                 self.wfile.write(bytes(file, "utf-8"))
                 return
-            if file_type == "png":
+
+            file_image_list = ["png", "jpeg", "jpg", "bmp", "webp"]
+            if file_type in file_image_list :
                 self.send_response(HTTPStatus.OK)
-                self.send_header("Content-type", "image/png")
+                self.send_header("Content-type", "image/"+file_type)
                 self.end_headers()
                 f = open(STATIC_DIR+self.path[1:], "rb")
                 file = f.read()
                 f.close()
                 self.wfile.write(file)
                 return
-
+            if file_type == "js":
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-type", "text/javascript")
+                self.end_headers()
+                f = open(STATIC_DIR+self.path[1:], "r")
+                file = f.read()
+                f.close()
+                self.wfile.write(bytes(file, "utf-8"))
+                return
 
 
         # itero en las rutas para encontrar conincidencia        
@@ -65,17 +76,18 @@ class Handler(SimpleHTTPRequestHandler):
             # context = tupla(view, context_obj)
             template = context[0]
             context_obj = context[1]
-            # print("*******************")
-            # print("Template :{}".format(template))
-            # print("Context : {}".format(context_obj))
-            # print("*******************")
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            c = open(os.getcwd()+"/public/views/"+template)
-            file = c.read()
-            c.close()
-            self.wfile.write(bytes(file,"utf-8"))
+            try:
+                c = open(os.getcwd()+"/public/views/"+template)
+                file = c.read()
+                c.close()
+                self.wfile.write(bytes(file,"utf-8"))
+            except FileNotFoundError:
+                self.wfile.write(bytes(error_no_such_view,"utf-8"))
+
+            
       
 
     def do_POST():
