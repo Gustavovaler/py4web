@@ -1,9 +1,4 @@
-import model
-class Controller:
-    def __init__(self, path):
-        self.path = path
-
-
+from core.controller import Controller
 
 class IndexController(Controller):
     def index(self):

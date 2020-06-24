@@ -2,11 +2,12 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from http import HTTPStatus
 import os
 import controllers
-from controllers import IndexController, UsersController, ProductosController
-from settings import routes, STATIC_DIR
+from settings import STATIC_DIR
+from router import routes
 from utilities.utils import static_files_maping
 
-    
+from controllers import IndexController, UsersController, ProductosController
+
 
 class Handler(SimpleHTTPRequestHandler):
     
@@ -62,52 +63,7 @@ class Handler(SimpleHTTPRequestHandler):
             file = c.read()
             c.close()
             self.wfile.write(bytes(file,"utf-8"))
-            
-
       
-
-        # for route in routes:
-        #     path = route[0]
-        #     print("self path = {}".format(self.path))
-        #     print(path)
-        #     if path == self.path:
-        #         cont= route[1]
-        #         r = controller.Controller(path)
-        #         respuesta = r.index()
-        #         print(respuesta)
-        #         break
-        #     # else:
-        #     #     self.send_response(HTTPStatus.NOT_FOUND)
-        #     #     self.send_header("Content-type", "text/html")
-        #     #     self.end_headers()
-        #     #     self.wfile.write(bytes("<h1>No encontrado - 404</h1>", "utf-8"))
-        #     #     return
-        
-        # self.directory = os.getcwd()+"/public/views"
-        # f = self.send_head()
-        
-        # if f:
-        #     try:
-        #         self.copyfile(f, self.wfile)
-        #     finally:
-        #         f.close()
-
-   
 
     def do_POST():
         return
-
-
-def run(server_class=HTTPServer, handler_class=Handler):
-    HOST_NAME = "localhost"
-    PORT_NUMBER = 8000
-    server_address = ('', 8000)
-    httpd = server_class(server_address, handler_class)
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        httpd.server_close()
-    print("Server Stops {} - {}".format(HOST_NAME, PORT_NUMBER))
-    
-
-run()
