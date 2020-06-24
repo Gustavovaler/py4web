@@ -1,1 +1,7 @@
-body{background-color: pink;}
+body{
+	background-color: pink;
+}
+
+.foto{
+	width: 200px;
+}

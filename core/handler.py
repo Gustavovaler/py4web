@@ -20,14 +20,27 @@ class Handler(SimpleHTTPRequestHandler):
 
         if self.path[1:] in static_files:
             print("serving static file : {}".format(self.path[1:]))
-            self.send_response(HTTPStatus.OK)
-            self.send_header("Content-type", "text/css")
-            self.end_headers()
-            f = open(STATIC_DIR+self.path[1:], "r")
-            file = f.read()
-            f.close()
-            self.wfile.write(bytes(file, "utf-8"))
-            return
+            file_type = self.path.split('.')[1]
+            if file_type == "css":
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-type", "text/css")
+                self.end_headers()
+                f = open(STATIC_DIR+self.path[1:], "r")
+                file = f.read()
+                f.close()
+                self.wfile.write(bytes(file, "utf-8"))
+                return
+            if file_type == "png":
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-type", "image/png")
+                self.end_headers()
+                f = open(STATIC_DIR+self.path[1:], "rb")
+                file = f.read()
+                f.close()
+                self.wfile.write(file)
+                return
+
+
 
         # itero en las rutas para encontrar conincidencia        
         for r in routes:
