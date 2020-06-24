@@ -1,13 +1,24 @@
 #include ("header.html")
 
 	<h1>Vista index</h1>
+	<h2>Variable = @variable</h2>
 
-	<ul>
-		#for @usuario in @usuarios:
-		   <li> Nombre: @usuario.nombre - Edad: @usuario.edad </li>
+	#if( @variable)
+   <strong>Quik!</strong>
+   <div></div>
+  	#end
 
-		 #end	
-	</ul>
+<ul>
+		
+    #for @user in @users:
+        #if (@user.edad >= 26)
+        <li><a href="@user.url">@user.nombre</a></li>
+        #end
+    #end
+</ul>
+
+
+	
 	<img src="foto.png" alt="" class="foto">
 	<br>
 	<img src="foto.jpg" alt="" class="foto">

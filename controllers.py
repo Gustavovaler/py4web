@@ -4,8 +4,10 @@ from core.controller import Controller
 class IndexController(Controller):
     def index(self):
         context = {}
-        context['usuarios'] = [{"nombre": "Marcelo", "edad": 25},{"nombre": "gustavo", "edad": 25}]
-
+        context['users'] = [{"nombre": "Marcelo", "edad": 25, "url":"something"},
+                                {"nombre": "gustavo", "edad": 26, "url":"something"},
+                                {"nombre": "Juan", "edad": 30, "url":"something"}]
+        context['variable'] = "hola"
         return ("index.html", context)
 
 
