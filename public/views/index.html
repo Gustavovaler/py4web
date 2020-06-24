@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Vista de prueba</title>
-	<link rel="stylesheet" href="estilos.css">
-</head>
-<body>
-		<nav>
-		<ul>
-			<li><a href="/">Inicio</a></li>
-			<li><a href="/users">Users</a></li>
-			<li><a href="/productos">Productos</a></li>
-		</ul>
-	</nav>
+#include ("header.html")
 
 	<h1>Vista index</h1>
+
+	<ul>
+		#for @usuario in @usuarios:
+		   <li> Nombre: @usuario.nombre - Edad: @usuario.edad </li>
+
+		 #end	
+	</ul>
 	<img src="foto.png" alt="" class="foto">
 	<br>
 	<img src="foto.jpg" alt="" class="foto">

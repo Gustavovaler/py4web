@@ -6,7 +6,7 @@ from settings import STATIC_DIR
 from router import routes
 from utilities.utils import static_files_maping
 from core.error_messages import error_no_such_view
-
+from core import render
 from controllers import IndexController, UsersController, ProductosController
 
 
@@ -16,11 +16,11 @@ class Handler(SimpleHTTPRequestHandler):
         
         #cargo los estaticos
         static_files = static_files_maping(STATIC_DIR)
-        print(STATIC_DIR+self.path)
-        print(static_files)
+        # print(STATIC_DIR+self.path)
+        # print(static_files)
 
         if self.path[1:] in static_files:
-            print("serving static file : {}".format(self.path[1:]))
+            # print("serving static file : {}".format(self.path[1:]))
             file_type = self.path.split('.')[1]
             if file_type == "css":
                 self.send_response(HTTPStatus.OK)
@@ -58,7 +58,7 @@ class Handler(SimpleHTTPRequestHandler):
             route = r[0]
             #ruta encontrada
             if route == self.path:
-                print("Requesting  tamplate for route: {}".format(route))
+                # print("Requesting  tamplate for route: {}".format(route))
                 # r son las rutas en el modulo routes.py
                 self.dispach_controller(r[1])
                 return
@@ -71,7 +71,7 @@ class Handler(SimpleHTTPRequestHandler):
         if path in dir(controllers):
             #instancio el controlador llamado en la ruta
             instancia = globals()[path](path)
-            #llamao al metodo index del controlador
+            #llamo al metodo index del controlador
             context = instancia.index()
             # context = tupla(view, context_obj)
             template = context[0]
@@ -80,10 +80,10 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html")
             self.end_headers()
             try:
-                c = open(os.getcwd()+"/public/views/"+template)
-                file = c.read()
-                c.close()
-                self.wfile.write(bytes(file,"utf-8"))
+                # c = open(os.getcwd()+"/public/views/"+template)
+                # file = c.read()
+                # c.close()
+                self.wfile.write(render.render(template,context_obj))
             except FileNotFoundError:
                 self.wfile.write(bytes(error_no_such_view,"utf-8"))
 

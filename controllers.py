@@ -3,8 +3,10 @@ from core.controller import Controller
 
 class IndexController(Controller):
     def index(self):
-        
-        return ("index.html", None)
+        context = {}
+        context['usuarios'] = [{"nombre": "Marcelo", "edad": 25},{"nombre": "gustavo", "edad": 25}]
+
+        return ("index.html", context)
 
 
 class UsersController(Controller):
