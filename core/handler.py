@@ -16,9 +16,7 @@ class Handler(SimpleHTTPRequestHandler):
         
         #cargo los estaticos
         static_files = static_files_maping(STATIC_DIR)
-        # print(STATIC_DIR+self.path)
-        # print(static_files)
-
+        
         if self.path[1:] in static_files:
             # print("serving static file : {}".format(self.path[1:]))
             file_type = self.path.split('.')[1]
