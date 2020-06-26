@@ -3,7 +3,7 @@ from http import HTTPStatus
 import os
 import controllers
 from settings import STATIC_DIR
-from router import routes
+from urls import routes
 from utilities.utils import static_files_maping
 from core.error_messages import error_no_such_view
 from core import render
