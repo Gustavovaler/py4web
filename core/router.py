@@ -23,21 +23,21 @@ def evaluate(path,url):
 
 
 class Route:
-    """Route.get(path, url, *args, controller=None, method = None, template = None, **kwargs)
+    """
 
-   path = is the route to be matched
-   url = is the url from Handler
-   controller = controller that will recieve the dict whit the values 
-   method = method in controller 
-
-   Route.get("/stadiums/<country>:string/<state>:string/<city>:string/<section>:int")
+    Route.get(path, url, *args, controller=None, method = None, template = None, **kwargs)
+    path = is the route to be matched
+    url = is the url from Handler
+    controller = controller that will recieve the dict whit the values 
+    method = method in controller 
+    Route.get("/stadiums/<country>:string/<state>:string/<city>:string/<section>:int")
         match whit url: "/stadiums/peru/buenos_aires/caba/3"
         doesn't match with: "/stadiums/peru/11/caba/3" because argument 3 is an int but the path expected for a string
    """
 
 
     @staticmethod
-    def get(path, url, *args, controller=None, method = None, template = None, **kwargs):
+    def get(path, url, *args, method = None, template = None, **kwargs):
         components = path.split("/")
         url_args = []
         c=1
@@ -47,7 +47,7 @@ class Route:
                 d[0]=d[0][1:-1]
                 url_args.append((d[0],d[1]))
             else:
-                url_args.append(("space"+str(c),seccion))
+                url_args.append(("controller",seccion))
             c+=1
         lista_url = evaluate(url_args, url)
         if lista_url:
@@ -58,7 +58,6 @@ class Route:
                 except:
                     conditions[url_args[t][0]] = lista_url[t]
 
-            conditions['controller'] = controller
             conditions['method'] = method
             conditions['template'] = template
         
@@ -68,7 +67,4 @@ class Route:
 
 
 
-Route.get("/stadiums/<country>:string/<state>:string/<city>:string/<section>:int", "/stadiums/peru/buenos_aires/caba/3",controller="IndexController", method = "index")
-Route.get("/users/<user_id>:int","/users/25")
-Route.get("/products/white_line/<product_id>:int", "/products/white_line/1568")
-Route.get("/products/white_line/<product_id>:int","/products/other/white_line/1568")
+
