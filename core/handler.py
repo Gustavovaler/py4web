@@ -2,6 +2,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from http import HTTPStatus
 import os
 import controllers
+from controllers import UsersController, IndexController, ProductosController
 from settings import STATIC_DIR
 from urls import routes
 from utilities.utils import static_files_maping
@@ -55,6 +56,7 @@ class Handler(SimpleHTTPRequestHandler):
             for route in routes:
                 match = Route.get(route[0], self.path)
                 if match:
+                    self.dispach_controller(match)
                     print(match)
                     return
             
@@ -74,27 +76,29 @@ class Handler(SimpleHTTPRequestHandler):
             
 
     
-    # def dispach_controller(self,path):
+    def dispach_controller(self,match):
 
-    #     #mapeo los controllers 
-    #     if path in dir(controllers):
-    #         #instancio el controlador llamado en la ruta
-    #         instancia = globals()[path](path)
-    #         #llamo al metodo index del controlador
-    #         context = instancia.index()
-    #         # context = tupla(view, context_obj)
-    #         template = context[0]
-    #         context_obj = context[1]
-    #         self.send_response(HTTPStatus.OK)
-    #         self.send_header("Content-type", "text/html")
-    #         self.end_headers()
-    #         try:
-    #             # c = open(os.getcwd()+"/public/views/"+template)
-    #             # file = c.read()
-    #             # c.close()
-    #             self.wfile.write(render.render(template,context_obj))
-    #         except FileNotFoundError:
-    #             self.wfile.write(bytes(error_no_such_view,"utf-8"))
+        #mapeo los controllers 
+        p= match['controller'].capitalize()
+        path = f"{p}Controller"
+        if path in dir(controllers):
+            #instancio el controlador llamado en la ruta
+            instancia = globals()[path](path)
+            #llamo al metodo index del controlador
+            context = instancia.index()
+            # context = tupla(view, context_obj)
+            template = context[0]
+            context_obj = context[1]
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            try:
+                # c = open(os.getcwd()+"/public/views/"+template)
+                # file = c.read()
+                # c.close()
+                self.wfile.write(render.render(template,context_obj))
+            except FileNotFoundError:
+                self.wfile.write(bytes(error_no_such_view,"utf-8"))
 
             
       

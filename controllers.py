@@ -12,7 +12,7 @@ class IndexController(Controller):
 
 
 class UsersController(Controller):
-    def index(self):
+    def index(self, *args, **kwargs):
         
         return ("users.html", None)
 
