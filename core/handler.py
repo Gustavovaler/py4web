@@ -19,6 +19,8 @@ class Handler(SimpleHTTPRequestHandler):
         
         #cargo los estaticos
         static_files = static_files_maping(STATIC_DIR)
+        if self.path == "/":
+            self.path = "/index"
         
         if self.path[1:] in static_files:
             # print("serving static file : {}".format(self.path[1:]))
@@ -59,33 +61,17 @@ class Handler(SimpleHTTPRequestHandler):
                     self.dispach_controller(match)
                     print(match)
                     return
-            
 
-
-
-
-        # # itero en las rutas para encontrar conincidencia        
-        # for r in routes:
-        #     route = r[0]
-        #     #ruta encontrada
-        #     if route == self.path:
-        #         # print("Requesting  tamplate for route: {}".format(route))
-        #         # r son las rutas en el modulo routes.py
-        #         self.dispach_controller(r[1])
-        #         return
-            
-
-    
     def dispach_controller(self,match):
 
         #mapeo los controllers 
-        p= match['controller'].capitalize()
+        p = match['controller'].capitalize()
         path = f"{p}Controller"
         if path in dir(controllers):
             #instancio el controlador llamado en la ruta
             instancia = globals()[path](path)
             #llamo al metodo index del controlador
-            context = instancia.index()
+            context = instancia.index(match)
             # context = tupla(view, context_obj)
             template = context[0]
             context_obj = context[1]
@@ -93,9 +79,6 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html")
             self.end_headers()
             try:
-                # c = open(os.getcwd()+"/public/views/"+template)
-                # file = c.read()
-                # c.close()
                 self.wfile.write(render.render(template,context_obj))
             except FileNotFoundError:
                 self.wfile.write(bytes(error_no_such_view,"utf-8"))

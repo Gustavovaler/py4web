@@ -2,23 +2,18 @@ from core.controller import Controller
 
 
 class IndexController(Controller):
-    def index(self):
-        context = {}
-        context['users'] = [{"nombre": "Marcelo", "edad": 25, "url":"something"},
-                                {"nombre": "gustavo", "edad": 26, "url":"something"},
-                                {"nombre": "Juan", "edad": 30, "url":"something"}]
-        context['variable'] = "hola"
+    def index(self,context,*args, **kwargs):
+        context['variable'] = "algo"
         return ("index.html", context)
 
 
 class UsersController(Controller):
-    def index(self, *args, **kwargs):
-        
-        return ("users.html", None)
-
+    def index(self,context, *args, **kwargs):
+        print(context)        
+        return ("users.html", context)
 
 
 class ProductosController(Controller):
-    def index(self):
-       
+
+    def index(self,context,*args, **kwargs):       
         return ("productos.html", None)
