@@ -3,6 +3,6 @@
 **Table of Contents**
 
 
-#### Inline code
+#### Start loaclserver (8000)
 
 `$ python server.py`
