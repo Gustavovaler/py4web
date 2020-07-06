@@ -16,3 +16,9 @@ SERVER_PORT = 8000
 #****************************************
 
 STATIC_DIR = os.getcwd()+"/public/static/"
+
+STATIC_DIRS = [
+    STATIC_DIR+"css/",
+    STATIC_DIR+"js/",
+    STATIC_DIR+"img/"
+    ]

@@ -3,7 +3,7 @@ from http import HTTPStatus
 import os
 import controllers
 from controllers import UsersController, IndexController, ProductosController
-from settings import STATIC_DIR
+from settings import STATIC_DIR, STATIC_DIRS
 from urls import routes
 from utilities.utils import static_files_maping
 from core.error_messages import error_no_such_view
@@ -19,11 +19,15 @@ class Handler(SimpleHTTPRequestHandler):
         
         #cargo los estaticos
         static_files = static_files_maping(STATIC_DIR)
+        for static_dir in STATIC_DIRS:
+            n_std = static_files_maping(static_dir)
+            static_files += n_std
+            
         if self.path == "/":
             self.path = "/index"
         
         if self.path[1:] in static_files:
-            # print("serving static file : {}".format(self.path[1:]))
+            print("serving static file : {}".format(self.path[1:]))
             file_type = self.path.split('.')[1]
             if file_type == "css":
                 self.send_response(HTTPStatus.OK)
