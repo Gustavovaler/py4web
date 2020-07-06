@@ -22,6 +22,7 @@ class Handler(SimpleHTTPRequestHandler):
         for static_dir in STATIC_DIRS:
             n_std = static_files_maping(static_dir)
             static_files += n_std
+        print(static_files)
             
         if self.path == "/":
             self.path = "/index"
